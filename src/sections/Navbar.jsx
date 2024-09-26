@@ -1,21 +1,19 @@
 import React from 'react'
+import { navLinks } from '../constants';
 
 const NavItems = () => {
   return (
-    <ul className='nav-ul'>
-      <li className='nav-li'>
-        <a href='/' className='nav-li_a'>Home</a>
-      </li>
-      <li className='nav-li'>
-        <a href='/' className='nav-li_a'>About</a>
-      </li>
-      <li className='nav-li'>
-        <a href='/' className='nav-li_a'>Projects</a>
-      </li>
-      <li className='nav-li'>
-        <a href='/' className='nav-li_a'>Contact</a>
-      </li>
-    </ul>
+    <div>
+      <ul className='nav-ul'>
+       {navLinks.map(({ id, name, href }) => (
+         <li key={id} className='nav-li'>
+           <a href={href} className='nav-li_a'>
+             {name}
+           </a>
+         </li>
+       ))}
+      </ul>
+    </div>
   )
 }
 
@@ -33,8 +31,8 @@ const Navbar = () => {
               sm:hidden flex' aria-label='toggle menu'>
                 <img src={isOpen ? '/assets/close.svg' : '/assets/menu.svg'} alt="toggle" className='w-6 h-6' />
              </button>
-             <nav className={isOpen ? 'block' : 'hidden'} aria-label='main navigation'>
-               
+             <nav className="sm:flex hidden" aria-label='main navigation'>
+               <NavItems />
              </nav>
            </div>
         </div>
