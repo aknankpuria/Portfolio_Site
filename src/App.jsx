@@ -1,15 +1,19 @@
-import Navbar from "./sections/Navbar";
-import Hero from "./sections/Hero";
-import About from "./sections/About";
-import Projects from "./sections/Projects";
-import Clients from "./sections/Clients";
-import Experience from "./sections/Experience";
-import Contact from "./sections/Contact";
-import Footer from "./sections/Footer";
+import Navbar from "./sections/Navbar.jsx";
+import Hero from "./sections/Hero.jsx";
+import About from "./sections/About.jsx";
+import Projects from "./sections/Projects.jsx";
+import Clients from "./sections/Clients.jsx";
+import Experience from "./sections/Experience.jsx";
+import Contact from "./sections/Contact.jsx";
+import Footer from "./sections/Footer.jsx";
+import CursorTrail from "./components/CursorTrail.jsx";
+import SpaceBackground from "./components/SpaceBackground.jsx";
 
 const App = () => {
   return (
     <main className="max-w-7xl mx-auto relative">
+      <SpaceBackground />
+      <CursorTrail />
       <Navbar />
       <Hero />
       <About />

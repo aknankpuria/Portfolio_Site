@@ -6,7 +6,7 @@ const About = () => {
   const [hasCopied, setHasCopied] = useState(false);
 
   const handleCopy = () => {
-    navigator.clipboard.writeText("aslam@example.com");
+    navigator.clipboard.writeText("aknankpuria@gmail.com");
     setHasCopied(true);
     setTimeout(() => setHasCopied(false), 2000);
   };
@@ -25,8 +25,10 @@ const About = () => {
             <div>
               <p className="grid-headtext">Hi, I&apos;m Aslam Khan</p>
               <p className="grid-subtext">
-                With 3 years of experience, I have honed my skills in frontend
-                and backend development, with a focus on animated 3D websites.
+                Results-driven Full Stack Developer with expertise in building
+                scalable web applications using React, Next.js, Node.js, and
+                TypeScript. Experienced in backend optimization, responsive UI
+                design, and Web3 development.
               </p>
             </div>
           </div>
@@ -43,9 +45,9 @@ const About = () => {
             <div>
               <p className="grid-headtext">Tech Stack</p>
               <p className="grid-subtext">
-                I specialize in JavaScript/TypeScript with a focus on React and
-                Next.js ecosystems. I also work with Three.js for 3D
-                experiences.
+                I specialize in React, Next.js, Node.js, and TypeScript.
+                Experienced with Web3 technologies including Solidity, Web3.js,
+                and Hardhat. Also proficient in PostgreSQL, MongoDB, and Docker.
               </p>
             </div>
           </div>
@@ -80,7 +82,8 @@ const About = () => {
                 I work remotely across most timezones.
               </p>
               <p className="grid-subtext">
-                I&apos;m based in India, with remote work available.
+                I&apos;m based in Chandigarh, India, with remote work available
+                across most timezones.
               </p>
               <Button name="Contact Me" isBeam containerClass="w-full mt-10" />
             </div>
@@ -122,7 +125,7 @@ const About = () => {
                   alt="copy"
                 />
                 <p className="lg:text-2xl md:text-xl font-medium text-gray_gradient text-white">
-                  aslam@example.com
+                  aknankpuria@gmail.com
                 </p>
               </div>
             </div>

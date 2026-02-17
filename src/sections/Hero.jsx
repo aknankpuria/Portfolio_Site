@@ -22,7 +22,7 @@ const Hero = () => {
           Hi, I&apos;m Aslam Khan <span className="waving-hand">👋</span>
         </p>
         <p className="hero_tag text-gray_gradient text-center">
-          Building things for the web and mobile.
+          Full Stack Developer | Web3 Enthusiast
         </p>
       </div>
       <div className="w-full h-full absolute inset-0">

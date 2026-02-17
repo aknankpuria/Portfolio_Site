@@ -9,8 +9,37 @@
 }
 
 body {
-  background: #010103;
-  font-family: 'General Sans', sans-serif;
+  background: linear-gradient(to bottom, #000000, #0a0a1a, #000814);
+  background-attachment: fixed;
+  font-family: 'Generalsans', sans-serif;
+  overflow-x: hidden;
+  cursor: none; /* Hide default cursor for custom effect */
+}
+
+/* Custom cursor dot */
+body::before {
+  content: '';
+  position: fixed;
+  width: 8px;
+  height: 8px;
+  background: rgba(147, 197, 253, 0.8);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 9999;
+  box-shadow: 0 0 10px rgba(147, 197, 253, 0.8),
+              0 0 20px rgba(147, 197, 253, 0.4);
+  animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.2);
+    opacity: 0.8;
+  }
 }
 
 @layer utilities {
@@ -194,4 +223,42 @@ body {
   100% {
     transform: rotate(0deg);
   }
+}
+/* Content visibility enhancements for space background */
+section {
+  position: relative;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: 20px;
+  padding: 2rem;
+  margin: 2rem 0;
+}
+
+/* Glassmorphism for cards and containers */
+.glass-effect {
+  background: rgba(10, 10, 26, 0.4);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Enhance grid items and containers */
+.grid-container > div,
+.about-grid > div,
+.work-container,
+.clients-container,
+.contact-container {
+  background: rgba(0, 0, 0, 0.4) !important;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(147, 197, 253, 0.1);
+}
+
+/* Navbar blur enhancement */
+nav {
+  background: rgba(0, 0, 0, 0.6) !important;
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border-bottom: 1px solid rgba(147, 197, 253, 0.2);
 }

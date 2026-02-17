@@ -9,7 +9,7 @@ const Footer = () => {
 
       <div className="flex gap-3">
         <a
-          href="https://github.com"
+          href="https://github.com/aknankpuria"
           target="_blank"
           rel="noopener noreferrer"
           className="social-icon"
@@ -17,7 +17,7 @@ const Footer = () => {
           <img src="/assets/github.svg" alt="github" className="w-1/2 h-1/2" />
         </a>
         <a
-          href="https://twitter.com"
+          href="https://x.com/aslmjs"
           target="_blank"
           rel="noopener noreferrer"
           className="social-icon"
@@ -29,14 +29,14 @@ const Footer = () => {
           />
         </a>
         <a
-          href="https://instagram.com"
+          href="https://linkedin.com/in/aslam-khan-88a353263"
           target="_blank"
           rel="noopener noreferrer"
           className="social-icon"
         >
           <img
             src="/assets/instagram.svg"
-            alt="instagram"
+            alt="linkedin"
             className="w-1/2 h-1/2"
           />
         </a>

@@ -22,154 +22,154 @@ export const navLinks = [
   ];
   
   export const clientReviews = [
-    {
-      id: 1,
-      name: 'Emily Johnson',
-      position: 'Marketing Director at GreenLeaf',
-      img: 'assets/review1.png',
-      review:
-        'Working with Adrian was a fantastic experience. He transformed our outdated website into a modern, user-friendly platform. His attention to detail and commitment to quality are unmatched. Highly recommend him for any web dev projects.',
-    },
+  {
+    id: 1,
+    name: 'AdsUp Team',
+    position: 'Tech Lead at AdsUp',
+    img: 'assets/review1.png',
+    review:
+      'Aslam is an exceptional full-stack developer who consistently delivers high-quality work. His backend optimization skills improved our API response time by 35%, and his attention to detail in UI design is remarkable. A true professional.',
+  },
     {
       id: 2,
-      name: 'Mark Rogers',
-      position: 'Founder of TechGear Shop',
-      img: 'assets/review2.png',
-      review:
-        'Adrian’s expertise in web development is truly impressive. He delivered a robust and scalable solution for our e-commerce site, and our online sales have significantly increased since the launch. He’s a true professional! Fantastic work.',
+      name: 'Web Wizards Client',
+    position: 'Startup Founder',
+    img: 'assets/review2.png',
+    review:
+      'Aslam built our entire dApp marketplace from scratch using cutting-edge Web3 technologies. His expertise in Solidity and React helped us launch ahead of schedule. Highly skilled in both frontend and blockchain development.',
     },
     {
       id: 3,
-      name: 'John Dohsas',
-      position: 'Project Manager at UrbanTech ',
-      img: 'assets/review3.png',
-      review:
-        'I can’t say enough good things about Adrian. He was able to take our complex project requirements and turn them into a seamless, functional website. His problem-solving abilities are outstanding.',
+      name: 'Soulverse Team',
+    position: 'Product Manager at Soulverse',
+    img: 'assets/review3.png',
+    review:
+      'Aslam\'s contributions to our Web3 platform were invaluable. His smart contract development skills and ability to integrate complex blockchain features into our React UI made our product stand out. Great team player.',
     },
     {
       id: 4,
-      name: 'Ether Smith',
-      position: 'CEO of BrightStar Enterprises',
-      img: 'assets/review4.png',
-      review:
-        'Adrian was a pleasure to work with. He understood our requirements perfectly and delivered a website that exceeded our expectations. His skills in both frontend backend dev are top-notch.',
+      name: 'Freelance Client',
+    position: 'E-commerce Business Owner',
+    img: 'assets/review4.png',
+    review:
+      'Working with Aslam was seamless. He configured our entire server infrastructure with Nginx and Cloudflare, significantly improving our site performance and security. Delivered under tight deadlines with excellent documentation.',
     },
   ];
   
   export const myProjects = [
-    {
-      title: 'Podcastr - AI Podcast Platform',
-      desc: 'Podcastr is a revolutionary Software-as-a-Service platform that transforms the way podcasts are created. With advanced AI-powered features like text-to-multiple-voices functionality, it allows creators to generate diverse voiceovers from a single text input.',
-      subdesc:
-        'Built as a unique Software-as-a-Service app with Next.js 14, Tailwind CSS, TypeScript, Framer Motion and Convex, Podcastr is designed for optimal performance and scalability.',
-      href: 'https://www.youtube.com/watch?v=zfAb95tJvZQ',
-      texture: '/textures/project/project1.mp4',
-      logo: '/assets/project-logo1.png',
-      logoStyle: {
-        backgroundColor: '#2A1816',
-        border: '0.2px solid #36201D',
-        boxShadow: '0px 0px 60px 0px #AA3C304D',
-      },
-      spotlight: '/assets/spotlight1.png',
-      tags: [
-        {
-          id: 1,
-          name: 'React.js',
-          path: '/assets/react.svg',
-        },
-        {
-          id: 2,
-          name: 'TailwindCSS',
-          path: 'assets/tailwindcss.png',
-        },
-        {
-          id: 3,
-          name: 'TypeScript',
-          path: '/assets/typescript.png',
-        },
-        {
-          id: 4,
-          name: 'Framer Motion',
-          path: '/assets/framer.png',
-        },
-      ],
+  {
+    title: 'dApp NFT Marketplace',
+    desc: 'A decentralized NFT marketplace built with cutting-edge Web3 technologies. Features smart contract integration, wallet connectivity, and secure blockchain transactions for buying, selling, and trading NFTs.',
+    subdesc:
+      'Developed using Solidity for smart contracts, Web3.js for blockchain interaction, Hardhat for testing and deployment, and React for the frontend. Implements secure wallet integration and real-time transaction tracking.',
+    href: 'https://github.com/aknankpuria',
+    texture: '/textures/project/project1.mp4',
+    logo: '/assets/project-logo1.png',
+    logoStyle: {
+      backgroundColor: '#2A1816',
+      border: '0.2px solid #36201D',
+      boxShadow: '0px 0px 60px 0px #AA3C304D',
     },
-    {
-      title: 'LiveDoc - Real-Time Google Docs Clone',
-      desc: 'LiveDoc is a powerful collaborative app that elevates the capabilities of real-time document editing. As an enhanced version of Google Docs, It supports millions of collaborators simultaneously, ensuring that every change is captured instantly and accurately.',
-      subdesc:
-        'With LiveDoc, users can experience the future of collaboration, where multiple contributors work together in real time without any lag, by using Next.js and Liveblocks newest features.',
-      href: 'https://www.youtube.com/watch?v=y5vE8y_f_OM',
-      texture: '/textures/project/project2.mp4',
-      logo: '/assets/project-logo2.png',
-      logoStyle: {
-        backgroundColor: '#13202F',
-        border: '0.2px solid #17293E',
-        boxShadow: '0px 0px 60px 0px #2F6DB54D',
+    spotlight: '/assets/spotlight1.png',
+    tags: [
+      {
+        id: 1,
+        name: 'React.js',
+        path: '/assets/react.svg',
       },
-      spotlight: '/assets/spotlight2.png',
-      tags: [
-        {
-          id: 1,
-          name: 'React.js',
-          path: '/assets/react.svg',
-        },
-        {
-          id: 2,
-          name: 'TailwindCSS',
-          path: 'assets/tailwindcss.png',
-        },
-        {
-          id: 3,
-          name: 'TypeScript',
-          path: '/assets/typescript.png',
-        },
-        {
-          id: 4,
-          name: 'Framer Motion',
-          path: '/assets/framer.png',
-        },
-      ],
-    },
-    {
-      title: 'CarePulse - Health Management System',
-      desc: 'An innovative healthcare platform designed to streamline essential medical processes. It simplifies patient registration, appointment scheduling, and medical record management, providing a seamless experience for both healthcare providers and patients.',
-      subdesc:
-        'With a focus on efficiency, CarePulse integrantes complex forms and SMS notifications, by using Next.js, Appwrite, Twillio and Sentry that enhance operational workflows.',
-      href: 'https://www.youtube.com/watch?v=lEflo_sc82g',
-      texture: '/textures/project/project3.mp4',
-      logo: '/assets/project-logo3.png',
-      logoStyle: {
-        backgroundColor: '#60f5a1',
-        background:
-          'linear-gradient(0deg, #60F5A150, #60F5A150), linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(208, 213, 221, 0.8) 100%)',
-        border: '0.2px solid rgba(208, 213, 221, 1)',
-        boxShadow: '0px 0px 60px 0px rgba(35, 131, 96, 0.3)',
+      {
+        id: 2,
+        name: 'Solidity',
+        path: 'assets/tailwindcss.png',
       },
-      spotlight: '/assets/spotlight3.png',
-      tags: [
-        {
-          id: 1,
-          name: 'React.js',
-          path: '/assets/react.svg',
-        },
-        {
-          id: 2,
-          name: 'TailwindCSS',
-          path: 'assets/tailwindcss.png',
-        },
-        {
-          id: 3,
-          name: 'TypeScript',
-          path: '/assets/typescript.png',
-        },
-        {
-          id: 4,
-          name: 'Framer Motion',
-          path: '/assets/framer.png',
-        },
-      ],
+      {
+        id: 3,
+        name: 'Web3.js',
+        path: '/assets/typescript.png',
+      },
+      {
+        id: 4,
+        name: 'Hardhat',
+        path: '/assets/framer.png',
+      },
+    ],
+  },
+    {
+    title: 'API Automation Tool',
+    desc: 'A powerful REST API automation tool that streamlines data synchronization processes. Reduced manual data sync time by 40% through intelligent automation and efficient API design.',
+    subdesc:
+      'Built with Node.js and Express, featuring automated data processing, webhook integrations, and comprehensive error handling. Includes detailed logging and monitoring capabilities.',
+    href: 'https://github.com/aknankpuria',
+    texture: '/textures/project/project2.mp4',
+    logo: '/assets/project-logo2.png',
+    logoStyle: {
+      backgroundColor: '#13202F',
+      border: '0.2px solid #17293E',
+      boxShadow: '0px 0px 60px 0px #2F6DB54D',
     },
+    spotlight: '/assets/spotlight2.png',
+    tags: [
+      {
+        id: 1,
+        name: 'Node.js',
+        path: '/assets/react.svg',
+      },
+      {
+        id: 2,
+        name: 'Express',
+        path: 'assets/tailwindcss.png',
+      },
+      {
+        id: 3,
+        name: 'REST API',
+        path: '/assets/typescript.png',
+      },
+      {
+        id: 4,
+        name: 'PostgreSQL',
+        path: '/assets/framer.png',
+      },
+    ],
+  },
+  {
+    title: 'Portfolio WebApp',
+    desc: 'A modern, responsive personal portfolio website built with Next.js and Tailwind CSS. Features server-side rendering for optimal performance, smooth animations, and a clean, professional design.',
+    subdesc:
+      'Implements server-side rendering with Next.js for fast load times, styled with Tailwind CSS for responsive design across all devices. Includes project showcases, contact forms, and interactive UI elements.',
+    href: 'https://github.com/aknankpuria',
+    texture: '/textures/project/project3.mp4',
+    logo: '/assets/project-logo3.png',
+    logoStyle: {
+      backgroundColor: '#60f5a1',
+      background:
+        'linear-gradient(0deg, #60F5A150, #60F5A150), linear-gradient(180deg, rgba(255, 255, 255, 0.9) 0%, rgba(208, 213, 221, 0.8) 100%)',
+      border: '0.2px solid rgba(208, 213, 221, 1)',
+      boxShadow: '0px 0px 60px 0px rgba(35, 131, 96, 0.3)',
+    },
+    spotlight: '/assets/spotlight3.png',
+    tags: [
+      {
+        id: 1,
+        name: 'Next.js',
+        path: '/assets/react.svg',
+      },
+      {
+        id: 2,
+        name: 'TailwindCSS',
+        path: 'assets/tailwindcss.png',
+      },
+      {
+        id: 3,
+        name: 'TypeScript',
+        path: '/assets/typescript.png',
+      },
+      {
+        id: 4,
+        name: 'SSR',
+        path: '/assets/framer.png',
+      },
+    ],
+  },
     {
       title: 'Horizon - Online Banking Platform',
       desc: 'Horizon is a comprehensive online banking platform that offers users a centralized finance management dashboard. It allows users to connect multiple bank accounts, monitor real-time transactions, and seamlessly transfer money to other users.',
@@ -258,31 +258,31 @@ export const navLinks = [
   };
   
   export const workExperiences = [
-    {
-      id: 1,
-      name: 'Framer',
-      pos: 'Lead Web Developer',
-      duration: '2022 - Present',
-      title: "Framer serves as my go-to tool for creating interactive prototypes. I use it to bring designs to  life, allowing stakeholders to experience the user flow and interactions before development.",
-      icon: '/assets/framer.svg',
-      animation: 'victory',
-    },
-    {
-      id: 2,
-      name: 'Figma',
-      pos: 'Web Developer',
-      duration: '2020 - 2022',
-      title: "Figma is my collaborative design platform of choice. I utilize it to work seamlessly with team members and clients, facilitating real-time feedback and design iterations. Its cloud-based.",
-      icon: '/assets/figma.svg',
-      animation: 'clapping',
-    },
-    {
-      id: 3,
-      name: 'Notion',
-      pos: 'Junior Web Developer',
-      duration: '2019 - 2020',
-      title: "Notion helps me keep my projects organized. I use it for project management, task tracking, and as a central hub for documentation, ensuring that everything from design notes to.",
-      icon: '/assets/notion.svg',
-      animation: 'salute',
-    },
-  ];
+  {
+    id: 1,
+    name: 'AdsUp',
+    pos: 'Full Stack Developer',
+    duration: '2024 - Present',
+    title: "Developed and maintained scalable full-stack web applications using Next.js, Node.js, and TypeScript. Improved API response time by 35% through backend optimization and database indexing. Designed responsive UI components with Tailwind CSS.",
+    icon: '/assets/framer.svg',
+    animation: 'victory',
+  },
+  {
+    id: 2,
+    name: 'Web Wizards',
+    pos: 'Freelance Developer',
+    duration: '2023 - 2024',
+    title: "Built multiple full-stack and decentralized applications for clients using React, Next.js, and Node.js. Integrated blockchain functionalities using Solidity, Web3.js, and Rust for dApp projects. Configured servers using Nginx and Cloudflare.",
+    icon: '/assets/figma.svg',
+    animation: 'clapping',
+  },
+  {
+    id: 3,
+    name: 'Soulverse',
+    pos: 'Junior Web3 Developer',
+    duration: '2023 - 2024',
+    title: "Supported smart contract development and UI integration for Web3 platforms using React and Solidity. Collaborated with the team to deliver blockchain features and enhance platform functionality.",
+    icon: '/assets/notion.svg',
+    animation: 'salute',
+  },
+];
