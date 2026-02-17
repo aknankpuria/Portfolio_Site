@@ -16,11 +16,15 @@ const Experience = () => {
         <div className="work-container">
           {/* Canvas for 3D Developer */}
           <div className="work-canvas">
-            <Canvas>
+            <Canvas dpr={[1, 1.5]} performance={{ min: 0.5 }}>
               <ambientLight intensity={7} />
               <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
               <directionalLight position={[10, 10, 10]} intensity={1} />
-              <OrbitControls enableZoom={false} maxPolarAngle={Math.PI / 2} />
+              <OrbitControls
+                enableZoom={false}
+                maxPolarAngle={Math.PI / 2}
+                enablePan={false}
+              />
 
               <Suspense fallback={<CanvasLoader />}>
                 <Developer

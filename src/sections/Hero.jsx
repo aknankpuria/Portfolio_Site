@@ -26,7 +26,11 @@ const Hero = () => {
         </p>
       </div>
       <div className="w-full h-full absolute inset-0">
-        <Canvas className="w-full h-full">
+        <Canvas
+          className="w-full h-full"
+          dpr={[1, 2]}
+          performance={{ min: 0.5 }}
+        >
           <Suspense fallback={<CanvasLoader />}>
             <PerspectiveCamera makeDefault position={[0, 0, 30]} />
             <HeroCamera isMobile={isMobile}>

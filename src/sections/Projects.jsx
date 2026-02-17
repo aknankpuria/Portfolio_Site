@@ -103,7 +103,7 @@ const Projects = () => {
 
         {/* 3D Computer Display */}
         <div className="border border-black-300 bg-black-200 rounded-lg h-96 md:h-full">
-          <Canvas>
+          <Canvas dpr={[1, 1.5]} performance={{ min: 0.5 }}>
             <ambientLight intensity={Math.PI} />
             <directionalLight position={[10, 10, 5]} />
             <Center>
@@ -113,7 +113,11 @@ const Projects = () => {
                 </group>
               </Suspense>
             </Center>
-            <OrbitControls maxPolarAngle={Math.PI / 2} enableZoom={false} />
+            <OrbitControls
+              maxPolarAngle={Math.PI / 2}
+              enableZoom={false}
+              enablePan={false}
+            />
           </Canvas>
         </div>
       </div>

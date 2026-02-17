@@ -1,19 +1,30 @@
-import { useGLTF, useTexture } from "@react-three/drei";
+import { useRef, useEffect } from "react";
+import { useGLTF, useVideoTexture } from "@react-three/drei";
 
-const DemoComputer = ({ texture, ...props }) => {
+const DemoComputer = (props) => {
+  const group = useRef();
   const { nodes, materials } = useGLTF("/models/computer.glb");
 
-  const txt = useTexture(texture);
+  // Use useVideoTexture from drei - it handles video loading properly
+  const txt = useVideoTexture(
+    props.texture ? props.texture : "/textures/project/project1.mp4",
+  );
+
+  useEffect(() => {
+    if (txt) {
+      txt.flipY = false;
+    }
+  }, [txt]);
 
   return (
-    <group {...props} dispose={null}>
+    <group ref={group} {...props} dispose={null}>
       <mesh
         castShadow
         receiveShadow
         geometry={nodes.screen_screens_0.geometry}
         material={materials.screens}
       >
-        <meshMatcapMaterial map={txt} />
+        <meshBasicMaterial map={txt} toneMapped={false} />
       </mesh>
       <mesh
         castShadow

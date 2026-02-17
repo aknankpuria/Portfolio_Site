@@ -1,6 +1,6 @@
 import { useGLTF, useTexture } from "@react-three/drei";
 
-const HackerRoom = (props) => {
+export function HackerRoom(props) {
   const { nodes, materials } = useGLTF("/models/hacker-room.glb");
 
   const monitortxt = useTexture("textures/desk/monitor.png");
@@ -72,7 +72,7 @@ const HackerRoom = (props) => {
       />
     </group>
   );
-};
+}
 
 useGLTF.preload("/models/hacker-room.glb");
 
