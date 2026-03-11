@@ -18,19 +18,18 @@ const Contact = () => {
     setLoading(true);
 
     try {
-      // Replace with your EmailJS credentials
-      // await emailjs.send(
-      //   'YOUR_SERVICE_ID',
-      //   'YOUR_TEMPLATE_ID',
-      //   {
-      //     from_name: form.name,
-      //     to_name: 'Aslam Khan',
-      //     from_email: form.email,
-      //     to_email: 'aslam@example.com',
-      //     message: form.message,
-      //   },
-      //   'YOUR_PUBLIC_KEY'
-      // );
+      await emailjs.send(
+        "service_vfbnlrj",
+        "template_gi30z2b",
+        {
+          from_name: form.name,
+          to_name: "Aslam Khan",
+          from_email: form.email,
+          to_email: "aknankpuria@gmail.com",
+          message: form.message,
+        },
+        "MHx6CORn4meS1yuVc",
+      );
 
       setLoading(false);
       alert("Your message has been sent!");
