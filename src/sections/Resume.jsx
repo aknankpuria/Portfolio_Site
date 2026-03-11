@@ -40,7 +40,7 @@ const Resume = () => {
 
           {/* Download button */}
           <a
-            href="/assets/resume.pdf"
+            href="/assets/Aslam-2026.pdf"
             download="Aslam_Khan_Resume.pdf"
             className="resume-btn group"
           >

@@ -4,6 +4,7 @@ import About from "./sections/About.jsx";
 import Projects from "./sections/Projects.jsx";
 import Clients from "./sections/Clients.jsx";
 import Experience from "./sections/Experience.jsx";
+import Resume from "./sections/Resume.jsx";
 import Contact from "./sections/Contact.jsx";
 import Footer from "./sections/Footer.jsx";
 import CursorTrail from "./components/CursorTrail.jsx";
@@ -20,6 +21,7 @@ const App = () => {
       <Projects />
       <Clients />
       <Experience />
+      <Resume />
       <Contact />
       <Footer />
     </main>
