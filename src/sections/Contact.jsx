@@ -80,6 +80,22 @@ const Contact = () => {
           },
         }
       );
+
+      gsap.fromTo(
+        ".contact-social-links",
+        { opacity: 0, y: 20 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          delay: 0.4,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ".contact-social-links",
+            start: "top 90%",
+          },
+        }
+      );
     }, sectionRef);
 
     return () => ctx.revert();
@@ -95,10 +111,12 @@ const Contact = () => {
         />
 
         <div className="contact-container contact-form-container">
-          <h3 className="head-text contact-heading">Let&apos;s talk</h3>
+          {/* Updated tagline from portfolio.md spec */}
+          <p className="text-label-alt contact-heading mb-3">Get In Touch</p>
+          <h3 className="head-text contact-heading">Let&apos;s build something real.</h3>
           <p className="text-lg text-white-600 mt-3">
-            Whether you&apos;re looking to build a new website, improve your
-            existing platform, or bring a unique project to life, I&apos;m here
+            Whether you&apos;re looking to build a new product, scale your
+            infrastructure, or bring a Web3/AI project to life — I&apos;m here
             to help.
           </p>
 
@@ -146,15 +164,51 @@ const Contact = () => {
               />
             </label>
 
-            <button className="field-btn" type="submit" disabled={loading}>
+            <button className="field-btn group" type="submit" disabled={loading}>
               {loading ? "Sending..." : "Send Message"}
               <img
                 src="/assets/arrow-up.png"
                 alt="arrow-up"
-                className="field-btn_arrow"
+                className="field-btn_arrow transition-transform duration-300 group-hover:-translate-y-0.5"
               />
             </button>
           </form>
+
+          {/* Social Links — from portfolio.md spec */}
+          <div className="contact-social-links flex items-center justify-center gap-6 mt-10 pt-8 border-t border-white/5">
+            <a
+              href="mailto:aknankpuria@gmail.com"
+              className="group flex items-center gap-2 text-white-500 hover:text-[#00E5CC] transition-colors duration-300"
+              aria-label="Email"
+            >
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+              </svg>
+              <span className="text-sm font-mono">Email</span>
+            </a>
+            <span className="text-white/10">|</span>
+            <a
+              href="https://github.com/aknankpuria"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-center gap-2 text-white-500 hover:text-[#00E5CC] transition-colors duration-300"
+              aria-label="GitHub"
+            >
+              <img src="/assets/github.svg" alt="github" className="w-5 h-5 opacity-60 group-hover:opacity-100 transition-opacity" />
+              <span className="text-sm font-mono">GitHub</span>
+            </a>
+            <span className="text-white/10">|</span>
+            <a
+              href="https://linkedin.com/in/aslam-khan-88a353263"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group flex items-center gap-2 text-white-500 hover:text-[#00E5CC] transition-colors duration-300"
+              aria-label="LinkedIn"
+            >
+              <img src="/assets/linkedin.svg" alt="linkedin" className="w-5 h-5 opacity-60 group-hover:opacity-100 transition-opacity" />
+              <span className="text-sm font-mono">LinkedIn</span>
+            </a>
+          </div>
         </div>
       </div>
     </section>

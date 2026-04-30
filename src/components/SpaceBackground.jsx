@@ -9,134 +9,115 @@ const SpaceBackground = () => {
     if (!canvas) return;
 
     const ctx = canvas.getContext("2d");
-    let stars = [];
 
-    // Set canvas size
-    const resizeCanvas = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      initStars();
-    };
+    // Offscreen canvas for the static background (gradient + nebula)
+    // Pre-rendered ONCE — not on every frame
+    let bgCanvas = null;
 
-    // Star class
-    class Star {
-      constructor() {
-        this.x = Math.random() * canvas.width;
-        this.y = Math.random() * canvas.height;
-        this.size = Math.random() * 2;
-        this.speedY = Math.random() * 0.5 + 0.1;
-        this.opacity = Math.random();
-        this.twinkleSpeed = Math.random() * 0.02 + 0.01;
-      }
+    const buildStaticBackground = (w, h) => {
+      bgCanvas = document.createElement("canvas");
+      bgCanvas.width = w;
+      bgCanvas.height = h;
+      const bCtx = bgCanvas.getContext("2d");
 
-      update() {
-        this.y += this.speedY;
-        if (this.y > canvas.height) {
-          this.y = 0;
-          this.x = Math.random() * canvas.width;
-        }
-
-        // Twinkling effect
-        this.opacity += this.twinkleSpeed;
-        if (this.opacity > 1 || this.opacity < 0.3) {
-          this.twinkleSpeed = -this.twinkleSpeed;
-        }
-      }
-
-      draw() {
-        ctx.save();
-        ctx.globalAlpha = this.opacity;
-
-        // Star glow
-        const gradient = ctx.createRadialGradient(
-          this.x,
-          this.y,
-          0,
-          this.x,
-          this.y,
-          this.size * 2,
-        );
-        gradient.addColorStop(0, "rgba(255, 255, 255, 1)");
-        gradient.addColorStop(0.5, "rgba(147, 197, 253, 0.5)");
-        gradient.addColorStop(1, "rgba(147, 197, 253, 0)");
-
-        ctx.fillStyle = gradient;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size * 2, 0, Math.PI * 2);
-        ctx.fill();
-
-        // Star core
-        ctx.fillStyle = "white";
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fill();
-
-        ctx.restore();
-      }
-    }
-
-    // Initialize stars
-    const initStars = () => {
-      stars = [];
-      const starCount = Math.floor((canvas.width * canvas.height) / 8000);
-      for (let i = 0; i < starCount; i++) {
-        stars.push(new Star());
-      }
-    };
-
-    resizeCanvas();
-    window.addEventListener("resize", resizeCanvas);
-
-    // Animation loop
-    const animate = () => {
-      // Create space gradient background
-      const gradient = ctx.createLinearGradient(0, 0, 0, canvas.height);
+      // Space gradient
+      const gradient = bCtx.createLinearGradient(0, 0, 0, h);
       gradient.addColorStop(0, "#000000");
       gradient.addColorStop(0.5, "#0a0a1a");
       gradient.addColorStop(1, "#000814");
+      bCtx.fillStyle = gradient;
+      bCtx.fillRect(0, 0, w, h);
 
-      ctx.fillStyle = gradient;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      // Draw nebula effect
-      ctx.save();
-      ctx.globalAlpha = 0.1;
-      const nebulaGradient = ctx.createRadialGradient(
-        canvas.width * 0.3,
-        canvas.height * 0.3,
-        0,
-        canvas.width * 0.3,
-        canvas.height * 0.3,
-        canvas.width * 0.5,
+      // Nebula — drawn once
+      bCtx.save();
+      bCtx.globalAlpha = 0.1;
+      const nebula = bCtx.createRadialGradient(
+        w * 0.3, h * 0.3, 0,
+        w * 0.3, h * 0.3, w * 0.5
       );
-      nebulaGradient.addColorStop(0, "rgba(88, 28, 135, 0.3)");
-      nebulaGradient.addColorStop(0.5, "rgba(59, 130, 246, 0.2)");
-      nebulaGradient.addColorStop(1, "rgba(0, 0, 0, 0)");
-      ctx.fillStyle = nebulaGradient;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.restore();
+      nebula.addColorStop(0, "rgba(88,28,135,0.3)");
+      nebula.addColorStop(0.5, "rgba(59,130,246,0.2)");
+      nebula.addColorStop(1, "rgba(0,0,0,0)");
+      bCtx.fillStyle = nebula;
+      bCtx.fillRect(0, 0, w, h);
+      bCtx.restore();
+    };
 
-      // Update and draw stars
-      stars.forEach((star) => {
-        star.update();
-        star.draw();
-      });
+    // Stars — simple objects, no class overhead
+    let stars = [];
 
+    const initStars = (w, h) => {
+      stars = [];
+      const count = Math.min(Math.floor((w * h) / 10000), 120); // cap at 120
+      for (let i = 0; i < count; i++) {
+        stars.push({
+          x: Math.random() * w,
+          y: Math.random() * h,
+          size: Math.random() * 1.5 + 0.3,
+          speedY: Math.random() * 0.3 + 0.05,
+          opacity: Math.random(),
+          twinkleDir: Math.random() > 0.5 ? 1 : -1,
+          twinkleSpeed: Math.random() * 0.008 + 0.004,
+        });
+      }
+    };
+
+    const resize = () => {
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      canvas.width = w;
+      canvas.height = h;
+      buildStaticBackground(w, h);
+      initStars(w, h);
+    };
+
+    resize();
+    window.addEventListener("resize", resize, { passive: true });
+
+    const animate = () => {
+      const w = canvas.width;
+      const h = canvas.height;
+
+      // Stamp the pre-rendered background (single drawImage — very fast)
+      if (bgCanvas) ctx.drawImage(bgCanvas, 0, 0);
+
+      // Draw stars — simple arc, no radial gradient
+      for (let i = 0; i < stars.length; i++) {
+        const s = stars[i];
+
+        // Update
+        s.y += s.speedY;
+        if (s.y > h) { s.y = 0; s.x = Math.random() * w; }
+        s.opacity += s.twinkleSpeed * s.twinkleDir;
+        if (s.opacity > 1) { s.opacity = 1; s.twinkleDir = -1; }
+        if (s.opacity < 0.2) { s.opacity = 0.2; s.twinkleDir = 1; }
+
+        // Draw — just a filled circle, no gradient
+        ctx.globalAlpha = s.opacity;
+        ctx.fillStyle = "#fff";
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.size, 0, 6.283); // 6.283 = Math.PI*2 pre-computed
+        ctx.fill();
+      }
+
+      ctx.globalAlpha = 1;
       animationFrameId.current = requestAnimationFrame(animate);
     };
 
     animate();
 
     return () => {
-      window.removeEventListener("resize", resizeCanvas);
-      if (animationFrameId.current) {
-        cancelAnimationFrame(animationFrameId.current);
-      }
+      window.removeEventListener("resize", resize);
+      if (animationFrameId.current) cancelAnimationFrame(animationFrameId.current);
+      bgCanvas = null;
     };
   }, []);
 
   return (
-    <canvas ref={canvasRef} className="fixed inset-0 pointer-events-none z-0" />
+    <canvas
+      ref={canvasRef}
+      className="fixed inset-0 pointer-events-none z-0"
+    />
   );
 };
 

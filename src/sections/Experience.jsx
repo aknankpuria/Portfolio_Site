@@ -1,6 +1,7 @@
 import { Suspense, useState, useEffect, useRef } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
+import { useMediaQuery } from "react-responsive";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { workExperiences } from "../constants";
@@ -12,6 +13,7 @@ gsap.registerPlugin(ScrollTrigger);
 const Experience = () => {
   const [animationName, setAnimationName] = useState("idle");
   const sectionRef = useRef();
+  const isMobile = useMediaQuery({ maxWidth: 768 });
 
   // GSAP scroll-triggered timeline animations from plan.md
   useEffect(() => {
@@ -50,6 +52,25 @@ const Experience = () => {
           }
         );
       });
+
+      // Animate metrics
+      gsap.utils.toArray(".metric-item").forEach((item, i) => {
+        gsap.fromTo(
+          item,
+          { opacity: 0, scale: 0.8 },
+          {
+            opacity: 1,
+            scale: 1,
+            duration: 0.6,
+            delay: i * 0.1,
+            ease: "back.out(1.7)",
+            scrollTrigger: {
+              trigger: item,
+              start: "top 90%",
+            },
+          }
+        );
+      });
     }, sectionRef);
 
     return () => ctx.revert();
@@ -58,36 +79,39 @@ const Experience = () => {
   return (
     <section className="c-space my-20" ref={sectionRef}>
       <div className="w-full text-white-600">
+        <p className="text-label-alt exp-heading mb-3">Career Journey</p>
         <h3 className="head-text exp-heading">My Work Experience</h3>
 
         <div className="work-container">
-          {/* Canvas for 3D Developer */}
-          <div className="work-canvas">
-            <Canvas dpr={[1, 1.5]} performance={{ min: 0.5 }}>
-              <ambientLight intensity={7} />
-              <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
-              <directionalLight position={[10, 10, 10]} intensity={1} />
-              <OrbitControls
-                enableZoom={false}
-                maxPolarAngle={Math.PI / 2}
-                enablePan={false}
-              />
-
-              <Suspense fallback={<CanvasLoader />}>
-                <Developer
-                  position-y={-3}
-                  scale={3}
-                  animationName={animationName}
+          {/* Canvas for 3D Developer - Hidden on mobile for performance */}
+          {!isMobile && (
+            <div className="work-canvas">
+              <Canvas dpr={[1, 1.5]} performance={{ min: 0.5 }}>
+                <ambientLight intensity={7} />
+                <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
+                <directionalLight position={[10, 10, 10]} intensity={1} />
+                <OrbitControls
+                  enableZoom={false}
+                  maxPolarAngle={Math.PI / 2}
+                  enablePan={false}
                 />
-              </Suspense>
-            </Canvas>
-          </div>
+
+                <Suspense fallback={<CanvasLoader />}>
+                  <Developer
+                    position-y={-3}
+                    scale={3}
+                    animationName={animationName}
+                  />
+                </Suspense>
+              </Canvas>
+            </div>
+          )}
 
           {/* Experience Content */}
-          <div className="work-content">
+          <div className={`work-content ${isMobile ? "col-span-1" : ""}`}>
             <div className="sm:py-10 py-5 sm:px-5 px-2.5">
               {workExperiences.map(
-                ({ id, name, pos, duration, title, icon, animation }) => (
+                ({ id, name, pos, duration, title, icon, animation, metrics }) => (
                   <div
                     key={id}
                     className="work-content_container group"
@@ -106,12 +130,34 @@ const Experience = () => {
 
                     <div className="sm:p-5 px-2.5 py-5">
                       <p className="font-bold text-white-800">{name}</p>
-                      <p className="text-sm mb-5">
-                        {pos} -- {duration}
+                      <p className="text-sm mb-3 text-[#00E5CC]/80">
+                        {pos} — {duration}
                       </p>
-                      <p className="group-hover:text-white transition ease-in-out duration-500">
+                      <p className="group-hover:text-white transition ease-in-out duration-500 text-sm leading-relaxed">
                         {title}
                       </p>
+
+                      {/* Impact Metrics */}
+                      {metrics && metrics.length > 0 && (
+                        <div className="flex flex-wrap gap-3 mt-4">
+                          {metrics.map((metric, i) => (
+                            <div
+                              key={i}
+                              className="metric-item flex items-center gap-2 px-3 py-1.5 rounded-lg border border-white/5 bg-white/[0.02]"
+                            >
+                              <span
+                                className="text-sm font-bold font-mono"
+                                style={{ color: '#00E5CC' }}
+                              >
+                                {metric.value}
+                              </span>
+                              <span className="text-xs text-white-500">
+                                {metric.label}
+                              </span>
+                            </div>
+                          ))}
+                        </div>
+                      )}
                     </div>
                   </div>
                 ),

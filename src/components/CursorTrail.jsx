@@ -1,142 +1,100 @@
 import { useEffect, useRef } from "react";
 
+/**
+ * CursorTrail — replaced canvas + particle system with two CSS divs.
+ *
+ * Why: The old approach did createRadialGradient() per particle per frame,
+ * spawned 2 new Particle objects per mousemove, and ran requestAnimationFrame
+ * at 60fps drawing up to ~50 gradients/frame — main-thread jank guaranteed.
+ *
+ * New approach:
+ * - Outer ring follows cursor with a CSS lerp (transform only → compositor thread)
+ * - Inner dot snaps to cursor instantly
+ * - Zero canvas, zero rAF, zero garbage collection
+ */
 const CursorTrail = () => {
-  const canvasRef = useRef(null);
-  const particles = useRef([]);
-  const mousePos = useRef({ x: 0, y: 0 });
-  const animationFrameId = useRef(null);
+  const dotRef = useRef(null);
+  const ringRef = useRef(null);
+  const pos = useRef({ x: 0, y: 0 });
+  const ring = useRef({ x: 0, y: 0 });
+  const rafRef = useRef(null);
 
   useEffect(() => {
-    const canvas = canvasRef.current;
-    if (!canvas) return;
+    // Hide on touch devices
+    if (window.matchMedia("(pointer: coarse)").matches) return;
 
-    const ctx = canvas.getContext("2d");
+    const dot = dotRef.current;
+    const ringEl = ringRef.current;
+    if (!dot || !ringEl) return;
 
-    // Set canvas size
-    const resizeCanvas = () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    };
-    resizeCanvas();
-    window.addEventListener("resize", resizeCanvas);
+    // Show cursors
+    dot.style.opacity = "1";
+    ringEl.style.opacity = "1";
 
-    // Particle class
-    class Particle {
-      constructor(x, y) {
-        this.x = x;
-        this.y = y;
-        this.size = Math.random() * 3 + 1;
-        this.speedX = (Math.random() - 0.5) * 2;
-        this.speedY = (Math.random() - 0.5) * 2;
-        this.life = 1;
-        this.decay = Math.random() * 0.015 + 0.01;
-        this.color = this.getRandomStarColor();
-      }
-
-      getRandomStarColor() {
-        const colors = [
-          "rgba(147, 197, 253, ", // Blue
-          "rgba(196, 181, 253, ", // Purple
-          "rgba(252, 211, 77, ", // Yellow
-          "rgba(167, 243, 208, ", // Cyan
-          "rgba(255, 255, 255, ", // White
-        ];
-        return colors[Math.floor(Math.random() * colors.length)];
-      }
-
-      update() {
-        this.x += this.speedX;
-        this.y += this.speedY;
-        this.life -= this.decay;
-        this.size *= 0.98;
-      }
-
-      draw(ctx) {
-        ctx.save();
-
-        // Outer glow
-        const gradient = ctx.createRadialGradient(
-          this.x,
-          this.y,
-          0,
-          this.x,
-          this.y,
-          this.size * 3,
-        );
-        gradient.addColorStop(0, this.color + this.life + ")");
-        gradient.addColorStop(0.5, this.color + this.life * 0.5 + ")");
-        gradient.addColorStop(1, this.color + "0)");
-
-        ctx.fillStyle = gradient;
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size * 3, 0, Math.PI * 2);
-        ctx.fill();
-
-        // Inner star
-        ctx.fillStyle = this.color + this.life + ")";
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-        ctx.fill();
-
-        // Star sparkle effect
-        if (Math.random() > 0.7) {
-          ctx.strokeStyle = this.color + this.life * 0.8 + ")";
-          ctx.lineWidth = 1;
-          ctx.beginPath();
-          ctx.moveTo(this.x - this.size * 2, this.y);
-          ctx.lineTo(this.x + this.size * 2, this.y);
-          ctx.moveTo(this.x, this.y - this.size * 2);
-          ctx.lineTo(this.x, this.y + this.size * 2);
-          ctx.stroke();
-        }
-
-        ctx.restore();
-      }
-    }
-
-    // Mouse move handler
-    const handleMouseMove = (e) => {
-      mousePos.current = { x: e.clientX, y: e.clientY };
-
-      // Create particles at cursor position
-      for (let i = 0; i < 2; i++) {
-        particles.current.push(new Particle(e.clientX, e.clientY));
-      }
+    const onMouseMove = (e) => {
+      pos.current.x = e.clientX;
+      pos.current.y = e.clientY;
+      // Dot snaps instantly via direct transform
+      dot.style.transform = `translate(${e.clientX - 4}px, ${e.clientY - 4}px)`;
     };
 
-    // Animation loop
-    const animate = () => {
-      ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-      // Update and draw particles
-      particles.current = particles.current.filter((particle) => {
-        particle.update();
-        particle.draw(ctx);
-        return particle.life > 0;
-      });
-
-      animationFrameId.current = requestAnimationFrame(animate);
+    // Ring lerps toward cursor — runs on compositor via transform only
+    const lerp = (a, b, t) => a + (b - a) * t;
+    const tick = () => {
+      ring.current.x = lerp(ring.current.x, pos.current.x, 0.12);
+      ring.current.y = lerp(ring.current.y, pos.current.y, 0.12);
+      ringEl.style.transform = `translate(${ring.current.x - 16}px, ${ring.current.y - 16}px)`;
+      rafRef.current = requestAnimationFrame(tick);
     };
 
-    window.addEventListener("mousemove", handleMouseMove);
-    animate();
+    window.addEventListener("mousemove", onMouseMove, { passive: true });
+    rafRef.current = requestAnimationFrame(tick);
 
     return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-      window.removeEventListener("resize", resizeCanvas);
-      if (animationFrameId.current) {
-        cancelAnimationFrame(animationFrameId.current);
-      }
+      window.removeEventListener("mousemove", onMouseMove);
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
     };
   }, []);
 
   return (
-    <canvas
-      ref={canvasRef}
-      className="fixed inset-0 pointer-events-none z-50"
-      style={{ mixBlendMode: "screen" }}
-    />
+    <>
+      {/* Inner dot — snaps instantly */}
+      <div
+        ref={dotRef}
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: 8,
+          height: 8,
+          borderRadius: "50%",
+          background: "#00E5CC",
+          pointerEvents: "none",
+          zIndex: 9999,
+          opacity: 0,
+          willChange: "transform",
+          boxShadow: "0 0 6px rgba(0,229,204,0.8)",
+        }}
+      />
+      {/* Outer ring — lerps behind */}
+      <div
+        ref={ringRef}
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: 32,
+          height: 32,
+          borderRadius: "50%",
+          border: "1.5px solid rgba(0,229,204,0.4)",
+          pointerEvents: "none",
+          zIndex: 9998,
+          opacity: 0,
+          willChange: "transform",
+          transition: "border-color 0.3s",
+        }}
+      />
+    </>
   );
 };
 

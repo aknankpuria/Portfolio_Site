@@ -12,19 +12,19 @@ const Preloader = () => {
 
     tl.fromTo(
       ".preloader-initials",
-      { opacity: 0, scale: 0.8, y: 20 },
-      { opacity: 1, scale: 1, y: 0, duration: 1, ease: "power3.out" }
+      { opacity: 0, scale: 0.85, y: 10 },
+      { opacity: 1, scale: 1, y: 0, duration: 0.4, ease: "power3.out" }
     )
       .to(".preloader-initials", {
-        scale: 1.2,
+        scale: 1.1,
         opacity: 0,
-        duration: 0.6,
-        delay: 0.4,
+        duration: 0.3,
+        delay: 0.2,
         ease: "power2.in",
       })
       .to(preloaderRef.current, {
         opacity: 0,
-        duration: 0.5,
+        duration: 0.2,
         ease: "power2.inOut",
       });
   }, []);
