@@ -1,8 +1,55 @@
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
+
 const Resume = () => {
+  const sectionRef = useRef();
+
+  // GSAP scroll-triggered animations
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        ".resume-heading",
+        { opacity: 0, y: 30 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ".resume-heading",
+            start: "top 85%",
+          },
+        }
+      );
+
+      gsap.fromTo(
+        ".resume-card",
+        { opacity: 0, y: 50, scale: 0.9 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 1,
+          delay: 0.2,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ".resume-card",
+            start: "top 85%",
+          },
+        }
+      );
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section className="c-space my-20" id="resume">
+    <section className="c-space my-20" id="resume" ref={sectionRef}>
       <div className="w-full flex flex-col items-center justify-center">
-        <h3 className="head-text mb-4">My Resume</h3>
+        <h3 className="head-text mb-4 resume-heading">My Resume</h3>
         <p className="text-lg text-white-600 text-center max-w-2xl mt-3 mb-12">
           Interested in my background and qualifications? Download my resume to
           learn more about my skills, experience, and education.

@@ -1,7 +1,12 @@
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const Contact = () => {
   const formRef = useRef();
+  const sectionRef = useRef();
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
     name: "",
@@ -41,8 +46,47 @@ const Contact = () => {
     }
   };
 
+  // GSAP scroll-triggered animations
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        ".contact-heading",
+        { opacity: 0, y: 30 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ".contact-heading",
+            start: "top 85%",
+          },
+        }
+      );
+
+      gsap.fromTo(
+        ".contact-form-container",
+        { opacity: 0, y: 50, scale: 0.95 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 1,
+          delay: 0.2,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ".contact-form-container",
+            start: "top 85%",
+          },
+        }
+      );
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section className="c-space my-20" id="contact">
+    <section className="c-space my-20" id="contact" ref={sectionRef}>
       <div className="relative min-h-screen flex items-center justify-center flex-col">
         <img
           src="/assets/terminal.png"
@@ -50,8 +94,8 @@ const Contact = () => {
           className="absolute inset-0 min-h-screen"
         />
 
-        <div className="contact-container">
-          <h3 className="head-text">Let&apos;s talk</h3>
+        <div className="contact-container contact-form-container">
+          <h3 className="head-text contact-heading">Let&apos;s talk</h3>
           <p className="text-lg text-white-600 mt-3">
             Whether you&apos;re looking to build a new website, improve your
             existing platform, or bring a unique project to life, I&apos;m here

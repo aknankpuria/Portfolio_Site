@@ -1,9 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { clientReviews } from "../constants";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const Clients = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const currentReview = clientReviews[currentIndex];
+  const sectionRef = useRef();
 
   const handleNavigation = (direction) => {
     setCurrentIndex((prevIndex) => {
@@ -15,12 +20,51 @@ const Clients = () => {
     });
   };
 
+  // GSAP scroll-triggered animations
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        ".clients-heading",
+        { opacity: 0, y: 30 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ".clients-heading",
+            start: "top 85%",
+          },
+        }
+      );
+
+      gsap.fromTo(
+        ".client-review-card",
+        { opacity: 0, y: 40, scale: 0.95 },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.8,
+          delay: 0.2,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ".client-review-card",
+            start: "top 85%",
+          },
+        }
+      );
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section className="c-space my-20">
-      <h3 className="head-text">Hear from My Clients</h3>
+    <section className="c-space my-20" ref={sectionRef}>
+      <h3 className="head-text clients-heading">Hear from My Clients</h3>
 
       <div className="client-container">
-        <div className="client-review">
+        <div className="client-review client-review-card">
           <div>
             <p className="text-white font-light">{currentReview.review}</p>
 

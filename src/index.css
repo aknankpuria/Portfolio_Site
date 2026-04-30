@@ -1,8 +1,127 @@
 @import url('https://fonts.cdnfonts.com/css/general-sans');
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* ═══════════════════════════════════════════════════
+   Obsidian Cosmos Design Tokens (from plan.md)
+   Added as CSS custom properties alongside Tailwind
+   ═══════════════════════════════════════════════════ */
+:root {
+  --bg-void: #050508;
+  --bg-card: #0d0d1a;
+  --bg-surface: #13131f;
+  --bg-border: #1e1e35;
+  --teal: #00E5CC;
+  --teal-dim: #00b3a0;
+  --orange: #FF6B35;
+  --purple: #7C3AED;
+  --text-primary: #E2E8F0;
+  --text-secondary: #8892a4;
+  --text-dim: #4a5568;
+  --grad-text: linear-gradient(135deg, #00E5CC 0%, #7C3AED 50%, #FF6B35 100%);
+  --font-display: 'Syne', sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --transition: 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Enhanced typography classes */
+.text-display {
+  font-family: var(--font-display);
+  font-size: clamp(3.5rem, 10vw, 9rem);
+  font-weight: 800;
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+}
+
+.text-section-alt {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 4rem);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.text-label-alt {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--teal);
+}
+
+.gradient-text {
+  background: var(--grad-text);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ═══════ Preloader ═══════ */
+#preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: var(--bg-void);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.preloader-initials {
+  font-family: var(--font-display);
+  font-size: 20vw;
+  font-weight: 800;
+  background: var(--grad-text);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* ═══════ Scroll reveal animations ═══════ */
+.reveal-up {
+  opacity: 0;
+  transform: translateY(40px);
+}
+
+.reveal-left {
+  opacity: 0;
+  transform: translateX(-40px);
+}
+
+.reveal-right {
+  opacity: 0;
+  transform: translateX(40px);
+}
+
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.9);
+}
+
+.revealed {
+  opacity: 1;
+  transform: translate(0, 0) scale(1);
+  transition: var(--transition);
+}
+
+/* ═══════ Blink cursor for terminal effects ═══════ */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* ═══════ Scramble text shimmer ═══════ */
+@keyframes shimmer {
+  0% { background-position: -200% center; }
+  100% { background-position: 200% center; }
+}
+
+.scramble-text {
+  display: inline-block;
+  font-family: var(--font-mono);
+}
 
 * {
   scroll-behavior: smooth;

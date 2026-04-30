@@ -1,17 +1,64 @@
-import { Suspense, useState } from "react";
+import { Suspense, useState, useEffect, useRef } from "react";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { workExperiences } from "../constants";
 import Developer from "../components/Developer";
 import CanvasLoader from "../components/CanvasLoader";
 
+gsap.registerPlugin(ScrollTrigger);
+
 const Experience = () => {
   const [animationName, setAnimationName] = useState("idle");
+  const sectionRef = useRef();
+
+  // GSAP scroll-triggered timeline animations from plan.md
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      // Animate section heading
+      gsap.fromTo(
+        ".exp-heading",
+        { opacity: 0, y: 30 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ".exp-heading",
+            start: "top 85%",
+          },
+        }
+      );
+
+      // Animate each work experience item
+      gsap.utils.toArray(".work-content_container").forEach((item, i) => {
+        gsap.fromTo(
+          item,
+          { opacity: 0, x: -30 },
+          {
+            opacity: 1,
+            x: 0,
+            duration: 0.8,
+            delay: i * 0.2,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: item,
+              start: "top 80%",
+            },
+          }
+        );
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
 
   return (
-    <section className="c-space my-20">
+    <section className="c-space my-20" ref={sectionRef}>
       <div className="w-full text-white-600">
-        <h3 className="head-text">My Work Experience</h3>
+        <h3 className="head-text exp-heading">My Work Experience</h3>
 
         <div className="work-container">
           {/* Canvas for 3D Developer */}

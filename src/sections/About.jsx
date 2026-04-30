@@ -1,9 +1,24 @@
-import { useState } from "react";
+import { Suspense, useState, useEffect, useRef } from "react";
+import { Canvas } from "@react-three/fiber";
+import { OrbitControls, useGLTF } from "@react-three/drei";
+import { useMediaQuery } from "react-responsive";
 import Globe from "react-globe.gl";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import Button from "../components/Button";
+import CanvasLoader from "../components/CanvasLoader";
+
+gsap.registerPlugin(ScrollTrigger);
+
+const Desk = (props) => {
+  const { scene } = useGLTF("/models/desk.glb");
+  return <primitive object={scene} {...props} />;
+};
 
 const About = () => {
   const [hasCopied, setHasCopied] = useState(false);
+  const isMobile = useMediaQuery({ maxWidth: 768 });
+  const sectionRef = useRef();
 
   const handleCopy = () => {
     navigator.clipboard.writeText("aknankpuria@gmail.com");
@@ -11,11 +26,38 @@ const About = () => {
     setTimeout(() => setHasCopied(false), 2000);
   };
 
+  // GSAP scroll-triggered reveal animations
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.utils.toArray(".about-grid-item").forEach((item, i) => {
+        gsap.fromTo(
+          item,
+          { opacity: 0, y: 50, scale: 0.95 },
+          {
+            opacity: 1,
+            y: 0,
+            scale: 1,
+            duration: 0.8,
+            delay: i * 0.15,
+            ease: "power3.out",
+            scrollTrigger: {
+              trigger: item,
+              start: "top 85%",
+              toggleActions: "play none none none",
+            },
+          }
+        );
+      });
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section className="c-space my-20" id="about">
+    <section className="c-space my-20" id="about" ref={sectionRef}>
       <div className="grid xl:grid-cols-3 xl:grid-rows-6 md:grid-cols-2 grid-cols-1 gap-5 h-full">
         {/* Grid 1 - Introduction */}
-        <div className="col-span-1 xl:row-span-3">
+        <div className="col-span-1 xl:row-span-3 about-grid-item">
           <div className="grid-container">
             <img
               src="/assets/grid1.png"
@@ -35,7 +77,7 @@ const About = () => {
         </div>
 
         {/* Grid 2 - Tech Stack */}
-        <div className="col-span-1 xl:row-span-3">
+        <div className="col-span-1 xl:row-span-3 about-grid-item">
           <div className="grid-container">
             <img
               src="/assets/grid2.png"
@@ -54,7 +96,7 @@ const About = () => {
         </div>
 
         {/* Grid 3 - Globe */}
-        <div className="col-span-1 xl:row-span-4">
+        <div className="col-span-1 xl:row-span-4 about-grid-item">
           <div className="grid-container">
             <div className="rounded-3xl w-full sm:h-[326px] h-fit flex justify-center items-center">
               <Globe
@@ -90,14 +132,35 @@ const About = () => {
           </div>
         </div>
 
-        {/* Grid 4 - Passion */}
-        <div className="xl:col-span-2 xl:row-span-3">
+        {/* Grid 4 - Passion (3D Desk Model) */}
+        <div className="xl:col-span-2 xl:row-span-3 about-grid-item">
           <div className="grid-container">
-            <img
-              src="/assets/grid3.png"
-              alt="grid-3"
-              className="w-full sm:h-[266px] h-fit object-contain"
-            />
+            {!isMobile ? (
+              <div className="w-full sm:h-[266px] h-[200px] rounded-xl overflow-hidden">
+                <Canvas dpr={[1, 1.5]} performance={{ min: 0.5 }}>
+                  <ambientLight intensity={5} />
+                  <directionalLight position={[5, 5, 5]} intensity={1} />
+                  <spotLight position={[-5, 5, 5]} angle={0.3} penumbra={1} intensity={0.5} />
+                  <OrbitControls
+                    enableZoom={false}
+                    enablePan={false}
+                    autoRotate
+                    autoRotateSpeed={3}
+                    maxPolarAngle={Math.PI / 2.2}
+                    minPolarAngle={Math.PI / 3}
+                  />
+                  <Suspense fallback={<CanvasLoader />}>
+                    <Desk scale={0.08} position={[0, -1.5, 0]} rotation={[0, -Math.PI / 4, 0]} />
+                  </Suspense>
+                </Canvas>
+              </div>
+            ) : (
+              <img
+                src="/assets/grid3.png"
+                alt="grid-3"
+                className="w-full sm:h-[266px] h-fit object-contain"
+              />
+            )}
             <div>
               <p className="grid-headtext">My Passion for Coding</p>
               <p className="grid-subtext">
@@ -110,7 +173,7 @@ const About = () => {
         </div>
 
         {/* Grid 5 - Contact */}
-        <div className="xl:col-span-1 xl:row-span-2">
+        <div className="xl:col-span-1 xl:row-span-2 about-grid-item">
           <div className="grid-container">
             <img
               src="/assets/grid4.png"
@@ -135,5 +198,7 @@ const About = () => {
     </section>
   );
 };
+
+useGLTF.preload("/models/desk.glb");
 
 export default About;

@@ -1,15 +1,20 @@
-import { Suspense, useState } from "react";
+import { Suspense, useState, useEffect, useRef } from "react";
 import { myProjects } from "../constants";
 import { Canvas } from "@react-three/fiber";
 import { Center, OrbitControls } from "@react-three/drei";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import CanvasLoader from "../components/CanvasLoader";
 import DemoComputer from "../components/DemoComputer";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const projectCount = myProjects.length;
 
 const Projects = () => {
   const [selectedProjectIndex, setSelectedProjectIndex] = useState(0);
   const currentProject = myProjects[selectedProjectIndex];
+  const sectionRef = useRef();
 
   const handleNavigation = (direction) => {
     setSelectedProjectIndex((prevIndex) => {
@@ -21,13 +26,66 @@ const Projects = () => {
     });
   };
 
+  // GSAP scroll-triggered reveal
+  useEffect(() => {
+    const ctx = gsap.context(() => {
+      gsap.fromTo(
+        ".projects-heading",
+        { opacity: 0, y: 30 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ".projects-heading",
+            start: "top 85%",
+          },
+        }
+      );
+
+      gsap.fromTo(
+        ".projects-content",
+        { opacity: 0, y: 50 },
+        {
+          opacity: 1,
+          y: 0,
+          duration: 1,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ".projects-content",
+            start: "top 80%",
+          },
+        }
+      );
+
+      gsap.fromTo(
+        ".projects-3d",
+        { opacity: 0, scale: 0.9 },
+        {
+          opacity: 1,
+          scale: 1,
+          duration: 1,
+          delay: 0.2,
+          ease: "power3.out",
+          scrollTrigger: {
+            trigger: ".projects-3d",
+            start: "top 80%",
+          },
+        }
+      );
+    }, sectionRef);
+
+    return () => ctx.revert();
+  }, []);
+
   return (
-    <section className="c-space my-20" id="work">
-      <p className="head-text">My Work</p>
+    <section className="c-space my-20" id="work" ref={sectionRef}>
+      <p className="head-text projects-heading">My Work</p>
 
       <div className="grid lg:grid-cols-2 grid-cols-1 mt-12 gap-5 w-full">
         {/* Project Info */}
-        <div className="flex flex-col gap-5 relative sm:p-10 py-10 px-5 shadow-2xl shadow-black-200">
+        <div className="projects-content flex flex-col gap-5 relative sm:p-10 py-10 px-5 shadow-2xl shadow-black-200">
           <div className="absolute top-0 right-0">
             <img
               src={currentProject.spotlight}
@@ -102,7 +160,7 @@ const Projects = () => {
         </div>
 
         {/* 3D Computer Display */}
-        <div className="border border-black-300 bg-black-200 rounded-lg h-96 md:h-full">
+        <div className="projects-3d border border-black-300 bg-black-200 rounded-lg h-96 md:h-full">
           <Canvas dpr={[1, 1.5]} performance={{ min: 0.5 }}>
             <ambientLight intensity={Math.PI} />
             <directionalLight position={[10, 10, 5]} />
